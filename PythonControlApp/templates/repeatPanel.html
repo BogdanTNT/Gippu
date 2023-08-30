@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div id="container">
+    <h2>Program</h2>
+    <ul class="fancy-list">
+        {% for element in elements %}
+        <li><a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Repeat Panel</h2>
+    <!-- Content for repeat panel -->
+    <!-- <button onclick="window.location.href='/teachPanel'">Switch to Teach Panel</button> -->
+
+    <div id="repeat-mode-main-panel">
+
+    </div>
+</div>
+</br>
+</br>
+<!-- {% if personel|length > 0 %}
+        <div id="lab-open-status-box">The lab is open. Come on in.</div>
+        </br>
+        <div id="who-is-in-lab-list">Who is in the lab right now:
+        </br>
+        </br>
+            <tbody>
+                {% for name in personel %}
+                    <tr>
+                        <td>{{ name }}</br></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </div>
+    {% else %}
+        <div id="lab-closed-status-box">The lab is empty right now.</div>
+    {% endif %} -->
+</br>
+</br>
+</br>
+<!-- {% if inTeam == False %}
+    <div id="join-team-database">
+        <h2>Join the team by entering your name</h2>
+        <form action="/addtoteam" method="get">
+            <input name="name" type="text" onblur="this.value=removeSpaces(this.value);">
+            <input type="submit">
+        </form>
+    </div>
+     {% else %} -->
+<!-- <h2 id="join-team-database">You are already in the team</h2> -->
+<!-- {% endif %} -->
+{% endblock %}

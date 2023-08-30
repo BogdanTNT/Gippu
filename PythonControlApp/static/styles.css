@@ -1,0 +1,32 @@
+@import url('fancy-list.css');
+@import url('navbar.css');
+
+main {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ensure full viewport height */
+    min-height: 100vh;
+
+    text-align: center;
+    /* centers the text inside the element */
+    font-size: 100%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+}
+
+a {
+    font-size: 100%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+}
+
+.container {
+    /* Center inline elements within the container */
+    text-align: center;
+    /* Adjust this value as needed */
+    max-width: 800px;
+    padding: 20px;
+}

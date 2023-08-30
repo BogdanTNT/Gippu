@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gippu</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="background-color: #1a1a1a">
+    <header class="header">
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="{{ url_for('home') }}">Repeat Panel</a></li>
+                <li><a href="{{ url_for('teachPanel') }}">Teach Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- Common footer content -->
+    </footer>
+</body>
+</html>

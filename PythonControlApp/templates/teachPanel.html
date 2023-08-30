@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+
+<div id="container">
+    <h2>Program</h2>
+    <!-- <ul class="fancy-list">
+        {% for element in elements %}
+        <li><a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a></li>
+        {% endfor %}
+    </ul> -->
+    <ul>
+        {% for element in elements %}
+        <li>
+            <a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a>
+            <button class="remove-button" data-item="{{ element }}">Remove</button>
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <script>
+    const removeButtons = document.querySelectorAll('.remove-button');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const itemToRemove = this.getAttribute('data-item');
+            fetch(`/remove/${itemToRemove}`, { method: 'POST' })
+                .then(() => window.location.reload());
+        });
+    });
+    </script>
+    
+
+    <h2>Teach Panel</h2>
+    <!-- Content for repeat panel -->
+    <!-- <button onclick="window.location.href='/'">Switch to Repeat Panel</button> -->
+
+    <div id="repeat-mode-main-panel">
+        <button id="add-position-button">Add Position</button>
+
+        <script>
+            document.getElementById("add-position-button").addEventListener("click", function () {
+                fetch("/teachPanel", { method: "POST" })
+                    .then(() => window.location.reload());
+            });
+        </script>
+    </div>
+</div>
+{% endblock %}
