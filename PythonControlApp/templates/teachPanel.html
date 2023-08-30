@@ -10,25 +10,7 @@
         <li><a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a></li>
         {% endfor %}
     </ul> -->
-    <ul>
-        {% for element in elements %}
-        <li>
-            <a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a>
-            <button class="remove-button" data-item="{{ element }}">Remove</button>
-        </li>
-        {% endfor %}
-    </ul>
-    
-    <script>
-    const removeButtons = document.querySelectorAll('.remove-button');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const itemToRemove = this.getAttribute('data-item');
-            fetch(`/remove/${itemToRemove}`, { method: 'POST' })
-                .then(() => window.location.reload());
-        });
-    });
-    </script>
+    {% include 'programList.html' %}
     
 
     <h2>Teach Panel</h2>
@@ -40,7 +22,7 @@
 
         <script>
             document.getElementById("add-position-button").addEventListener("click", function () {
-                fetch("/teachPanel", { method: "POST" })
+                fetch("/addPosition", { method: "POST" })
                     .then(() => window.location.reload());
             });
         </script>

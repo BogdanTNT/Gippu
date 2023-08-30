@@ -2,16 +2,13 @@
 
 {% block main %}
 <div id="container">
-    <h2>Program</h2>
-    <ul class="fancy-list">
-        {% for element in elements %}
-        <li><a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a></li>
-        {% endfor %}
-    </ul>
+    {% include 'programList.html' %}
 
     <h2>Repeat Panel</h2>
     <!-- Content for repeat panel -->
     <!-- <button onclick="window.location.href='/teachPanel'">Switch to Teach Panel</button> -->
+
+    
 
     <div id="repeat-mode-main-panel">
 

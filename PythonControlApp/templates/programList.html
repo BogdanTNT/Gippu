@@ -1,0 +1,62 @@
+<ul class="fancy-list" id="sortable-list">
+    {% for element in elements %}
+    <li draggable="true" data-index="{{ loop.index }}">
+        <div> <h5>-&nbsp&nbsp</h5> </div>
+        <a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a>
+        <button class="remove-button" data-item="{{ loop.index }}">Remove</button>
+    </li>
+    {% endfor %}
+</ul>
+<script>
+const removeButtons = document.querySelectorAll('.remove-button');
+removeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const itemToRemove = this.getAttribute('data-item');
+        fetch(`/remove/${itemToRemove}`, { method: 'POST' })
+            .then(() => window.location.reload());
+    });
+});
+
+const sortableList = document.getElementById('sortable-list');
+let draggedItem = null;
+
+sortableList.addEventListener('dragstart', e => {
+    draggedItem = e.target;
+    e.dataTransfer.setData('text/plain', draggedItem.dataset.index);
+    draggedItem.style.opacity = '0.5';
+});
+
+sortableList.addEventListener('dragend', e => {
+    draggedItem.style.opacity = '1';
+});
+
+sortableList.addEventListener('dragover', e => {
+    e.preventDefault();
+    const targetItem = e.target;
+    if (targetItem.nodeName === 'LI') {
+        targetItem.style.border = '2px dashed #ccc';
+    }
+});
+
+sortableList.addEventListener('dragleave', e => {
+    const targetItem = e.target;
+    if (targetItem.nodeName === 'LI') {
+        targetItem.style.border = 'none';
+    }
+});
+
+sortableList.addEventListener('drop', e => {
+    e.preventDefault();
+    const targetItem = e.target;
+    if (targetItem.nodeName === 'LI') {
+        targetItem.style.border = 'none';
+        const fromIndex = Number(draggedItem.dataset.index) - 1;
+        const toIndex = Number(targetItem.dataset.index) - 1;
+        console.log(fromIndex)
+        console.log(toIndex)
+        // Update the order on the server using fetch or AJAX
+        fetch(`/reorder/${fromIndex}/${toIndex}`, { method: 'POST' })
+            .then(() => window.location.reload());
+    }
+});
+</script>
