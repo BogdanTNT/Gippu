@@ -6,13 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body style="background-color: #1a1a1a">
     <header class="header">
         <nav class="navbar">
             <ul class="nav-list">
-                <li><a href="{{ url_for('home') }}">Repeat Panel</a></li>
-                <li><a href="{{ url_for('teachPanel') }}">Teach Panel</a></li>
+                <li><a href="{{ url_for('RepeatPanelBlueprint.home') }}">Repeat Panel</a></li>
+                <li><a href="{{ url_for('TeachPanelBlueprint.teachPanel') }}">Teach Panel</a></li>
+                <li><a href="{{ url_for('MovePanelBlueprint.movePanel') }}">Move Panel</a></li>
             </ul>
         </nav>
     </header>

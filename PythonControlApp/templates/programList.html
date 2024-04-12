@@ -1,11 +1,22 @@
 <ul class="fancy-list" id="sortable-list">
-    {% for element in elements %}
+    
+    {% for element in Robot.program %}
     <li draggable="true" data-index="{{ loop.index }}">
-        <div> <h5>-&nbsp&nbsp</h5> </div>
-        <a href="{{ url_for('element_details', index=loop.index) }}">{{ element }}</a>
+        <div> <h5>{{ loop.index }}&nbsp&nbsp</h5> </div>
+        <a href="{{ url_for('ProgramListBlueprint.element_details', index=loop.index) }}">{{ element.positions }}</a>
         <button class="remove-button" data-item="{{ loop.index }}">Remove</button>
     </li>
     {% endfor %}
+
+    <form method="POST" action="/update">
+        <label for="new_number">Current Position:</label>
+        <input type="number" id="current_number_input" name="new_number" value="{{ number }}" required>
+        <button type="submit">Change Number</button>
+    </form>
+
+    <!-- Add a hidden input to store the current number -->
+    <!-- <input type="hidden" id="current_number_input" value="{{ number }}"> -->
+
 </ul>
 <script>
 const removeButtons = document.querySelectorAll('.remove-button');
@@ -59,4 +70,21 @@ sortableList.addEventListener('drop', e => {
             .then(() => window.location.reload());
     }
 });
+
+function updateNumberField() {
+    // Fetch the current number from the server
+    fetch('/get_current_number')
+        .then(response => response.json())
+        .then(data => {
+            // Update the input field and the displayed current number
+            const currentNumberInput = document.getElementById('current_number_input');
+            currentNumberInput.value = data.number + 1;
+        });
+}
+
+// Periodically update the input field (e.g., every 5 seconds)
+setInterval(updateNumberField, 500);
+
+// Initial update when the page loads
+updateNumberField();
 </script>

@@ -75,7 +75,7 @@ def InitUI():
 
     # Define the UI elements for the second set
     label2 = customtkinter.CTkLabel(master=teachContainer, text="Container 2")
-    button2 = customtkinter.CTkButton(master=teachContainer, text="Add Position", command=programList.AddPosition)
+    button2 = customtkinter.CTkButton(master=teachContainer, text="Add Position", command=programList.AddPositionFromServoPos)
 
     # Create a button to remove the selected item
     remove_button = customtkinter.CTkButton(root, text="Remove", command=programList.remove_selected_item)

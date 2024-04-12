@@ -13,8 +13,9 @@ Servo servos[servoCount];
 int servoPins[] = { 3, 5, 6, 9, 10, 11 };
 int angles[] = { A0, A1, A2, A3, A6, A7 };
 
-int mapServoPotToAngleMin[] = { 31, 24, 24, 26, 27, 26 };
-int mapServoPotToAngleMax[] = { 441, 410, 418, 264, 264, 264 };
+int mapServoPotToAngleMin[] = { 59, 57, 24, 31, 24, 26 };
+int mapServoPotToAngleMax[] = { 450, 450, 418, 441, 410, 264 };
+bool invertServoPos[] = { 1, 1, 0, 0, 0, 0};
 
 bool teachMode = false;
 int motorPowerPin = 2;
@@ -27,10 +28,18 @@ void setup() {
   }
   Serial.begin(9600);
 
+  // data.values[0] = 30;
+  // data.values[1] = 160;
+  // data.values[2] = 110;
+  // data.values[3] = 50;
+  // data.values[4] = 90;
+  // data.values[5] = 90;
+
+
   data.values[0] = 90;
-  data.values[1] = 100;
-  data.values[2] = 110;
-  data.values[3] = 150;
+  data.values[1] = 90;
+  data.values[2] = 90;
+  data.values[3] = 90;
   data.values[4] = 90;
   data.values[5] = 90;
 
@@ -39,6 +48,7 @@ void setup() {
   // data.values[3] = 150; data.values[4] = 90; data.values[5] = 90;
 
   pinMode(motorPowerPin, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
@@ -52,6 +62,9 @@ void loop() {
   } else {
     digitalWrite(motorPowerPin, HIGH);
   }
+  
+  // digitalWrite(LED_BUILTIN, LOW);
+
 }
 
 // Function to extract an array from the JSON document
@@ -66,6 +79,8 @@ int extractArray(JsonArray array, int* targetArray) {
 
 void ReceiveData() {
   if (Serial.available()) {
+    digitalWrite(LED_BUILTIN, HIGH);
+
     String jsonStr = Serial.readStringUntil('\n');
 
     DynamicJsonDocument doc(1024);
@@ -86,6 +101,8 @@ void ReceiveData() {
       extractArray(doc["values"], data.values);
 
       teachMode = false;
+      digitalWrite(LED_BUILTIN, LOW);
+
     }
     if (data.id == 1) {
       teachMode = true;
@@ -97,7 +114,10 @@ void ReceiveData() {
           // currentAngles[i] = (float)analogRead(angles[i]);
           float servoValue = (float)analogRead(angles[i]);
           currentAngles[i] = servoValue;
-          currentAngles[i] = abs((servoValue - mapServoPotToAngleMin[i]) / (mapServoPotToAngleMax[i] - mapServoPotToAngleMin[i])) * 180;
+          if(invertServoPos[i])
+            currentAngles[i] = 180 - abs((servoValue - mapServoPotToAngleMin[i]) / (mapServoPotToAngleMax[i] - mapServoPotToAngleMin[i])) * 180;
+          else
+            currentAngles[i] = abs((servoValue - mapServoPotToAngleMin[i]) / (mapServoPotToAngleMax[i] - mapServoPotToAngleMin[i])) * 180;
           delay(1);
         }
       }
@@ -119,6 +139,7 @@ void ReceiveData() {
 
       Serial.println(response);
       // Serial.println(freeMemory());
+
     }
   }
 }

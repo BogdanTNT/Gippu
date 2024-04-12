@@ -1,3 +1,4 @@
+import random
 import time
 import serial
 import json
@@ -16,8 +17,6 @@ def connect_to_arduino():
         for p in serial.tools.list_ports.comports()
         if 'Arduino' in p.description or 'USB Serial' in p.description  # Modify this condition if needed
     ]
-    # for p in serial.tools.list_ports.comports():
-    #     print(p.description)
 
     if len(arduino_ports) == 0:
         print("Arduino not found.")
@@ -38,15 +37,27 @@ def connect_to_arduino():
 
 
 def send_json_to_arduino(data):
+    InitArduinoConnection()
     global arduino
     json_data = json.dumps(data)
     if arduino is not None:
+        print(type(json_data.encode()))
         arduino.write(json_data.encode())
         print(f"Sent JSON data: {json_data}")
 
 
 def receive_json_from_arduino():
+    InitArduinoConnection()
     global arduino
+
+    # Debug if arduino is not connected
+    if arduino == None:
+        data = {
+            "id": 1,
+            "values": [random.randint(0, 180) for _ in range(6)]
+        }
+        return data
+    
     response = ""
     print(response)
     while len(response) < 2:

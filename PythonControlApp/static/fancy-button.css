@@ -1,0 +1,28 @@
+/* CSS for the fancy button */
+button {
+    display: inline-block;
+    border: none;
+    border-radius: 50px; /* Makes it round */
+    background-color: #ff3333; /* Red background */
+    color: #000; /* Black text */
+    padding: 10px 20px; /* Adjust padding for size */
+    font-size: 15px; /* Adjust font size for text */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Adds a shadow */
+    cursor: pointer; /* Add hover effect */
+    transition: background-color 0.3s, transform 0.2s;
+
+    margin: 6px;
+}
+
+button:hover {
+    background-color: #ff5555; /* Lighter red on hover */
+    transform: scale(1.05); /* Slightly scales up on hover */
+}
+
+/* Disabled state */
+button:disabled {
+    background-color: #ccc; /* Grayed-out background color */
+    color: #666; /* Grayed-out text color */
+    cursor: not-allowed; /* Change cursor style */
+}
+

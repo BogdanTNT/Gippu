@@ -14,9 +14,9 @@ class ListBox(CTkListbox):
         if selected_index:
             self.delete(selected_index)
 
-    def AddPosition(self):
+    def AddPositionFromServoPos(self):
         whereToInsert = self.index_of_current_selection()
-        newPos = Robot.AddPosition(index=whereToInsert)
+        newPos = Robot.AddPositionFromServoPos(index=whereToInsert)
         # print(whereToInsert)
         self.insert(whereToInsert + 1, newPos)
 

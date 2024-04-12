@@ -1,17 +1,79 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div id="container">
+<div>
+    <h2>Program</h2>
     {% include 'programList.html' %}
 
     <h2>Repeat Panel</h2>
     <!-- Content for repeat panel -->
     <!-- <button onclick="window.location.href='/teachPanel'">Switch to Teach Panel</button> -->
 
-    
-
     <div id="repeat-mode-main-panel">
 
+        <div class="centered-container">
+            <div class="column">
+                <button id="run-once-button" {% if Robot.running %}disabled{% endif %}>Run Once</button>
+                <button id="run-forever-button" {% if Robot.running %}disabled{% endif %}>Run Forever</button>
+
+            </div>
+            <div class="column">
+                <button id="stop-button" {% if not Robot.running %}disabled{% endif %}>Stop Running</button>
+
+            </div>
+            <!-- <div class="column">Column 3</div> -->
+            <!-- <div class="column">Column 3</div> -->
+            <!-- <div class="column">Column 3</div> -->
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#run-once-button').click(function () {
+                    $.post('/run_once', function (data) {
+                        $('#run-once-button').prop('disabled', true);
+                        $('#run-forever-button').prop('disabled', true);
+                        $('#stop-button').prop('disabled', false);
+                        refreshStatus();
+                    });
+                });
+
+                $('#run-forever-button').click(function () {
+                    $.post('/run_forever', function (data) {
+                        $('#run-once-button').prop('disabled', true);
+                        $('#run-forever-button').prop('disabled', true);
+                        $('#stop-button').prop('disabled', false);
+                        refreshStatus();
+                    });
+                });
+
+                $('#stop-button').click(function () {
+                    $.post('/stop_printing', function (data) {
+                        $('#run-once-button').prop('disabled', false);
+                        $('#run-forever-button').prop('disabled', false);
+                        $('#stop-button').prop('disabled', true);
+                        refreshStatus();
+                    });
+                });
+
+                function refreshStatus() {
+                    $.get('/', function (data) {
+                        // console.log(data.Robot.running)
+                        if (data.Robot.running) {
+                            $('#run-once-button').prop('disabled', true);
+                            $('#run-forever-button').prop('disabled', true);
+                            $('#stop-button').prop('disabled', false);
+                        } else {
+                            $('#run-once-button').prop('disabled', false);
+                            $('#run-forever-button').prop('disabled', false);
+                            $('#stop-button').prop('disabled', true);
+                        }
+                    });
+                }
+
+                // Refresh the status every 2 seconds
+                setInterval(refreshStatus, 2000);
+            });
+        </script>
     </div>
 </div>
 </br>

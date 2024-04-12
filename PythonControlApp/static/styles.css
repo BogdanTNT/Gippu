@@ -1,5 +1,6 @@
 @import url('fancy-list.css');
 @import url('navbar.css');
+@import url('fancy-button.css');
 
 main {
     margin: 0;
@@ -15,6 +16,9 @@ main {
     font-size: 100%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
+
+    justify-content: center;
+    align-items: center;
 }
 
 a {
@@ -27,6 +31,47 @@ a {
     /* Center inline elements within the container */
     text-align: center;
     /* Adjust this value as needed */
-    max-width: 800px;
+    /* max-width: 800px; */
     padding: 20px;
+
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centered container */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* min-height: 100vh; */
+}
+
+/* Columns inside the container */
+.column {
+    flex: 1;
+    /* Each column takes equal width */
+    max-width: 300px;
+    /* Adjust the width of each column as needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    /* Add borders for separation */
+    margin: 10px;
+    /* Add margin between columns */
+    text-align: center;
+}
+
+.move-main-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.xyz-column {
+    /* display: flex;
+    width: 33.33%;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: visible;
+
+    width: 100%; */
 }

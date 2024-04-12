@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+
+<div id="container">
+    <h2>Program</h2>
+    {% include 'programList.html' %}
+
+
+    <h2>Move Panel</h2>
+    <div class="move-main-panel">
+
+        {% for number_set in Robot.xyz %}
+        <div class="xyz_column">
+            <h2>{{ number_set['name'] }}</h2>
+            <p>Value:  {{ number_set['value']|round(2) }}</p>
+            <form method="POST" action="/increment/{{ loop.index0 }}">
+                <button class="button" type="submit">Increment</button>
+                <input type="hidden" name="increment_type" value="0">
+            </form>
+            <form method="POST" action="/decrement/{{ loop.index0 }}">
+                <button class="button" type="submit">Decrement</button>
+                <input type="hidden" name="increment_type" value="0">
+            </form>
+            <form method="POST" action="/increment/{{ loop.index0 }}">
+                <button class="button" type="submit">Increment by 0.5</button>
+                <input type="hidden" name="increment_type" value="1">
+            </form>
+            <form method="POST" action="/decrement/{{ loop.index0 }}">
+                <button class="button" type="submit">Decrement by 0.5</button>
+                <input type="hidden" name="increment_type" value="1">
+            </form>
+            <form method="POST" action="/increment/{{ loop.index0 }}">
+                <button class="button" type="submit">Increment by 0.1</button>
+                <input type="hidden" name="increment_type" value="2">
+            </form>
+            <form method="POST" action="/decrement/{{ loop.index0 }}">
+                <button class="button" type="submit">Decrement by 0.1</button>
+                <input type="hidden" name="increment_type" value="2">
+            </form>
+            <form method="POST" action="/increment/{{ loop.index0 }}">
+                <button class="button" type="submit">Increment by 0.05</button>
+                <input type="hidden" name="increment_type" value="3">
+            </form>
+            <form method="POST" action="/decrement/{{ loop.index0 }}">
+                <button class="button" type="submit">Decrement by 0.05</button>
+                <input type="hidden" name="increment_type" value="3">
+            </form>
+        </div>
+
+        {% endfor %}
+
+        <script>
+            document.getElementById("add-position-button").addEventListener("click", function () {
+                fetch("/AddPositionFromServoPos", { method: "POST" })
+                    .then(() => window.location.reload());
+            });
+        </script>
+    </div>
+</div>
+{% endblock %}

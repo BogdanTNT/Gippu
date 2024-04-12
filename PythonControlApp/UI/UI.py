@@ -47,7 +47,7 @@
 
 #         button2 = QPushButton("Add Position", self.teachContainer)
 #         button2.setGeometry(10, 50, 100, 30)
-#         button2.clicked.connect(self.programList.AddPosition)
+#         button2.clicked.connect(self.programList.AddPositionFromServoPos)
 
 #         remove_button = QPushButton("Remove", self)
 #         remove_button.setGeometry(10, 550, 80, 30)
