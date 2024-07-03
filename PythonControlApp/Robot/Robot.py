@@ -1,11 +1,25 @@
 import time
 import Arduino.ArduinoSerialCommunication as Arduino
-
+import json
+import os
 
 class Keyframe:
-    def __init__(self, positions, speed = 2.0):
+    def __init__(self, positions, speed = 2.0, keyName = "Key Name"):
         self.positions = positions
         self.speed = speed
+        self.keyName = keyName
+
+    def to_dict(self):
+        return {
+            'positions': self.positions,
+            'speed': self.speed,
+            'keyName': self.keyName
+        }
+    
+    @staticmethod
+    def from_dict(data):
+        """Creates an instance from a dictionary."""
+        return Keyframe(data['positions'], data['speed'], data['keyName'])
 
 # Create instances of the struct
 keyframe = Keyframe([30, 100, 110, 50, 90, 90])
@@ -26,10 +40,83 @@ motorMaxAngle = [180, 270, 270, 300, 300, 300]
 IKController = None
 
 xyz = [
-    {'name': 'X', 'value': 0.4},
-    {'name': 'Y', 'value': 0},
-    {'name': 'Z', 'value': 0.4},
+    {'name': 'X', 'value': 0.7},
+    {'name': 'Y', 'value': 0.3},
+    {'name': 'Z', 'value': -0.2},
 ]
+
+# Current program loaded on the robot
+loadedProgram = "Starter Program"
+# Used to remember which program the user may want to override
+programToOverwrite = ""
+ 
+#  Not used
+def Initialise():
+    global program
+    global loadedProgram
+    # program = read_json_file(loadedProgram)
+    
+def read_json_file(filename):
+    global program
+    root_dir = "Programs"  # Base directory to search
+
+    # Walk through all directories and files in root_dir
+    for dirpath, dirnames, files in os.walk(root_dir):
+        if filename in files:
+            full_path = os.path.join(dirpath, filename)
+            try:
+                with open(full_path, 'r') as file:
+                    data = json.load(file)
+                    program = [Keyframe.from_dict(kf) for kf in data['program']]
+                    print(program)
+                return f"Program was found and loaded from {full_path}. :)"
+            except json.JSONDecodeError:
+                return "Error decoding the JSON file."
+
+    # If the file is not found in any subdirectory, load a default Keyframe
+    # program = [Keyframe([30, 100, 110, 50, 90, 90])]
+    return "Program was not found. :("
+    
+def write_json_file(filename, override=False):
+    """
+    Searches for a file in the Programs folder. If found and override is False, returns a warning message.
+    Otherwise, writes data to the file.
+    
+    Args:
+    filename (str): The name of the file to write to.
+    override (bool): If True, overrides the file if it exists. Default is False.
+    
+    Returns:
+    None: Returns a message if the file already exists and override is False, otherwise writes to the file.
+    """
+    global program
+    global programToOverwrite
+    global loadedProgram
+    program_dict = [kf.to_dict() for kf in program]
+    data = {'program': program_dict}
+    root_dir = "Programs"  # Base directory to search
+
+    # Attempt to find the file in the directory structure
+    file_path = None
+    for dirpath, dirnames, files in os.walk(root_dir):
+        if filename in files:
+            file_path = os.path.join(dirpath, filename)
+            break
+
+    if file_path and not override:
+        programToOverwrite = filename
+        return "File already exists. Do you want to overwrite it?"
+
+    # If file was not found or override is True, write to the specified path
+    if not file_path:
+        file_path = os.path.join("Programs/Others", filename)  # Default path if not found
+
+    # Write data to the file
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
+
+    loadedProgram = filename
+    return f"Data written to {file_path}"
 
 def RunProgramOnce():
     global running
@@ -66,8 +153,6 @@ def AddPositionFromServoPos(index):
     program.insert(index, keyframe)
 
     return received_data['values']
-
-
 
 def MoveToNextPosition():
     global teachMode
@@ -114,12 +199,11 @@ def InitIK():
 
     return IKController
 
-
 def IK():
     import math
     target_position = [xyz[0]['value'], xyz[1]['value'], xyz[2]['value']]
 
-    target_orientation = [-1, 0, 0]
+    target_orientation = [0, 1, 0]
 
     global IKController
 
@@ -140,9 +224,9 @@ def IK():
         angles[i] = int(angles[i] / motorMaxAngle[i] * 180)
 
     # angles = angles[1:]
-    print(angles)
+    # print(angles)
     global currentAngles
-    print(computed_position[:3, 3])
+    # print(computed_position[:3, 3])
     for i in range(3):
         delta = computed_position[:3, 3][i] - target_position[i]
         if delta > 0.1:

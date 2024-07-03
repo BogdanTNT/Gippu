@@ -15,8 +15,12 @@ def connect_to_arduino():
     arduino_ports = [
         p.device
         for p in serial.tools.list_ports.comports()
-        if 'Arduino' in p.description or 'USB Serial' in p.description  # Modify this condition if needed
+        # if 'Arduino' in p.description or 'USB Serial' in p.description or 'Pi' in p.description   # Modify this condition if needed 
     ]
+
+    for string in arduino_ports:
+        if string.find('Bluetooth'):
+            arduino_ports.remove(string)
 
     if len(arduino_ports) == 0:
         print("Arduino not found.")
@@ -60,8 +64,10 @@ def receive_json_from_arduino():
     
     response = ""
     print(response)
-    while len(response) < 2:
+    time.sleep(0.5)
+    while len(response) < 10:
         response = arduino.readline().decode().rstrip()
         time.sleep(0.1)
     print(f"Received JSON data: {response}")
+
     return json.loads(response)

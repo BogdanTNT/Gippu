@@ -1,0 +1,16 @@
+{
+    "program": [
+        {
+            "positions": [
+                30,
+                100,
+                110,
+                50,
+                90,
+                90
+            ],
+            "speed": 2.0,
+            "keyName": "Key Name"
+        }
+    ]
+}

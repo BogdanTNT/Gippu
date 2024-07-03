@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
+
+
+<div id="container">
+    <h2>Program Panel</h2>
+    <div class="program-main-panel">
+        <div class="program-text-editor">
+            <div id="editor" style="height: 500px; width: 100%;">function hello() { console.log("Hello, world!"); }
+            </div>
+        </div>
+        <div class="program-info">
+            {% include 'components/file_manager.html' %}
+
+            <h3>Da</h3>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize the editor
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/javascript");
+
+    // Enable options
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+    });
+
+    // Example of setting keyboard shortcuts
+    editor.commands.addCommand({
+        name: 'moveLineUp',
+        bindKey: { win: 'Alt-Up', mac: 'Alt-Up' },
+        exec: function (editor) {
+            editor.moveLinesUp();
+        }
+    });
+
+    editor.commands.addCommand({
+        name: 'moveLineDown',
+        bindKey: { win: 'Alt-Down', mac: 'Alt-Down' },
+        exec: function (editor) {
+            editor.moveLinesDown();
+        }
+    });
+</script>
+{% endblock %}

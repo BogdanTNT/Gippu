@@ -5,7 +5,7 @@
 main {
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     /* Ensure full viewport height */
@@ -74,4 +74,31 @@ a {
     overflow: visible;
 
     width: 100%; */
+}
+
+.program-main-panel {
+    /* border: 3px solid #fff;
+    padding: 20px; */
+    display: flex;
+    width: 100%;
+}
+
+.program-text-editor {
+    border: 2px solid #de0000;
+    flex: 1; /* Grows and shrinks dynamically */
+    padding: 10px; /* Spacing inside the div */
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.program-info {
+    border: 2px solid #de0000;
+    flex: 1; /* Grows and shrinks dynamically */
+    padding: 10px; /* Spacing inside the div */
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    margin: 10px;
+
+    text-align: left;
 }

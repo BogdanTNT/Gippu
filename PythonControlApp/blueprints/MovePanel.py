@@ -7,6 +7,7 @@ from flask import Blueprint
 
 movePanelBlueprint = Blueprint('MovePanelBlueprint', __name__)
 
+increment_values = [1, 0.5, 0.1, 0.05]
 
 @movePanelBlueprint.route('/movePanel')
 def movePanel():
@@ -14,22 +15,20 @@ def movePanel():
 
     Robot.MoveInBasePos()
 
-    return render_template('movePanel.html', Robot = Robot)
+    return render_template('movePanel.html', Robot = Robot, increment_values = increment_values)
 
 @movePanelBlueprint.route('/increment/<int:index>', methods=['POST'])
 def increment(index):
-    increment_values = [1, 0.5, 0.1, 0.05]
     increment_value = increment_values[int(request.form['increment_type'])]
     Robot.xyz[index]['value'] += increment_value
     Robot.MoveInBasePos()
 
-    return render_template('movePanel.html', Robot = Robot)
+    return render_template('movePanel.html', Robot = Robot, increment_values = increment_values)
 
 @movePanelBlueprint.route('/decrement/<int:index>', methods=['POST'])
 def decrement(index):
-    increment_values = [1, 0.5, 0.1, 0.05]
     increment_value = increment_values[int(request.form['increment_type'])]
     Robot.xyz[index]['value'] -= increment_value
     Robot.MoveInBasePos()
 
-    return render_template('movePanel.html', Robot = Robot)
+    return render_template('movePanel.html', Robot = Robot, increment_values = increment_values)

@@ -5,11 +5,23 @@ from flask import Blueprint
 
 repeatPanelBlueprint = Blueprint('RepeatPanelBlueprint', __name__)
 
-@repeatPanelBlueprint.route("/")
-def home():
+@repeatPanelBlueprint.route("/repeatPanel", methods=['GET', 'POST'])
+def repeat_panel():
     localIp = request.remote_addr
+
+    result = None
+    if request.method == 'POST':
+        filename = request.form['filename']
+        action = request.form.get('action')
+        
+        if action == 'write':
+            result = Robot.write_json_file(filename=filename)
+        elif action == 'overwrite':
+            result = Robot.write_json_file(filename=filename, override=True)
+        elif action == 'read':
+            result = Robot.read_json_file(filename=filename)
     
-    return render_template('repeatPanel.html', Robot=Robot), 200
+    return render_template('repeatPanel.html', Robot=Robot, result = result), 200
 
 @repeatPanelBlueprint.route('/run_once', methods=['POST'])
 def run_once():

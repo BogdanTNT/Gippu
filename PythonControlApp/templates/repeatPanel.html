@@ -7,23 +7,31 @@
 
     <h2>Repeat Panel</h2>
     <!-- Content for repeat panel -->
-    <!-- <button onclick="window.location.href='/teachPanel'">Switch to Teach Panel</button> -->
-
     <div id="repeat-mode-main-panel">
+
+        <h1>File Operations</h1>
+        <form method="post">
+            <input type="text" name="filename" placeholder="Enter file name" value="{{ Robot.loadedProgram if result != 'File already exists. Do you want to overwrite it?' else Robot.programToOverwrite }}" required>
+            <!-- onclick="if(this.value == 'Enter file name') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Enter file name'; }"> -->
+            <button type="submit" name="action" value="read">Read File</button>
+            <button type="submit" name="action" value="write">Write File</button>
+            {% if result == "File already exists. Do you want to overwrite it?" %}
+                <button type="submit" name="action" value="overwrite">Overwrite</button>
+            {% endif %}
+        </form>
+        {% if result %}
+            <h2>Result:</h2>
+            <pre>{{ result }}</pre>
+        {% endif %}
 
         <div class="centered-container">
             <div class="column">
                 <button id="run-once-button" {% if Robot.running %}disabled{% endif %}>Run Once</button>
                 <button id="run-forever-button" {% if Robot.running %}disabled{% endif %}>Run Forever</button>
-
             </div>
             <div class="column">
                 <button id="stop-button" {% if not Robot.running %}disabled{% endif %}>Stop Running</button>
-
             </div>
-            <!-- <div class="column">Column 3</div> -->
-            <!-- <div class="column">Column 3</div> -->
-            <!-- <div class="column">Column 3</div> -->
         </div>
 
         <script>
